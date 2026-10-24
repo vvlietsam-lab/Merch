@@ -1,0 +1,399 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<title>Xamuel Merch Lab</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: photo mockup is the hero (left / top on phone); a quiet spec panel on the right. Single dark look: a studio lightbox. */
+:root{
+  --ground:#0e0f11;
+  --panel:#16181b;
+  --line:#26292e;
+  --ink:#ecebe7;
+  --mute:#8b9099;
+  --accent:#39ff7a;
+  --warn:#ff6b4a;
+  --font-ui:"Inter Tight", system-ui, -apple-system, sans-serif;
+  --font-mono:"IBM Plex Mono", ui-monospace, Menlo, monospace;
+  color-scheme:dark;
+}
+html,body{background:var(--ground);color:var(--ink)}
+body{font-family:var(--font-ui);font-size:14px;line-height:1.45;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:12px 40px}
+*{box-sizing:border-box}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.brand{display:flex;align-items:baseline;gap:10px}
+.brand h1{margin:0;font-weight:700;font-size:20px;letter-spacing:-.01em}
+.brand span{font-family:var(--font-mono);font-size:12px;color:var(--mute)}
+.bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+select,input[type=text],input[type=number],textarea{background:#0b0c0e;border:1px solid var(--line);border-radius:6px;padding:8px 10px;min-width:0;width:100%}
+.bar select{width:auto;max-width:260px}
+.btn{background:transparent;border:1px solid var(--line);border-radius:6px;padding:8px 12px;cursor:pointer;font-weight:600;font-size:13px}
+.btn:hover{border-color:#3a3f46}
+.btn.primary{background:var(--accent);color:#06210f;border-color:var(--accent)}
+.chip{font-family:var(--font-mono);font-size:11.5px;color:var(--mute);border:1px solid var(--line);border-radius:999px;padding:3px 9px}
+.chip.ok{color:var(--accent);border-color:rgba(57,255,122,.35)}
+.chip.bad{color:var(--warn);border-color:rgba(255,107,74,.45)}
+.layout{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:18px;align-items:start}
+@media (max-width:900px){.layout{grid-template-columns:minmax(0,1fr)}}
+.stage{position:sticky;top:max(10px,env(safe-area-inset-top,0px));background:#1c1d1f;border-radius:10px;overflow:hidden}
+@media (max-width:900px){.stage{position:relative;top:0}}
+.stage canvas{display:block;width:100%;height:auto;aspect-ratio:3/4;max-width:100%}
+.stage-bar{display:flex;gap:6px;padding:8px;background:var(--panel);border-top:1px solid var(--line);flex-wrap:wrap;align-items:center}
+.seg{display:flex;gap:4px;flex-wrap:wrap}
+.seg button{background:#0b0c0e;border:1px solid var(--line);border-radius:6px;padding:7px 11px;cursor:pointer;font-size:13px;color:var(--mute)}
+.seg button[aria-pressed="true"]{color:var(--ink);border-color:var(--ink)}
+.seg button:disabled{opacity:.35;cursor:not-allowed}
+.stage-note{margin-left:auto;font-family:var(--font-mono);font-size:11.5px;color:var(--mute)}
+.loading{position:absolute;inset:0;display:grid;place-items:center;color:var(--mute);font-family:var(--font-mono)}
+.side{display:flex;flex-direction:column;gap:12px;min-width:0}
+.tabs{display:flex;border-bottom:1px solid var(--line)}
+.tabs button{background:none;border:0;padding:10px 12px;cursor:pointer;font-weight:600;color:var(--mute);border-bottom:2px solid transparent;margin-bottom:-1px}
+.tabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--accent)}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:12px;display:grid;gap:12px}
+.card-h{display:flex;align-items:center;gap:10px}
+.card-h img{width:44px;height:44px;object-fit:contain;background:#0b0c0e;border-radius:4px;flex:none}
+.card-h .t{flex:1;min-width:0}
+.card-h .t b{display:block;font-size:14px}
+.card-h .t span{font-family:var(--font-mono);font-size:11.5px;color:var(--mute)}
+.lbl{font-size:12px;font-weight:600;color:var(--mute);letter-spacing:.02em}
+.field{display:grid;gap:5px;min-width:0}
+.row{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px}
+.range{display:grid;grid-template-columns:minmax(0,1fr) 62px;gap:8px;align-items:center}
+.range output{font-family:var(--font-mono);font-size:12.5px;text-align:right;font-variant-numeric:tabular-nums}
+input[type=range]{width:100%;accent-color:var(--accent)}
+.hint{font-size:12.5px;color:var(--mute)}
+.warn{font-size:12.5px;color:var(--warn)}
+.lib{display:grid;grid-template-columns:repeat(auto-fill,minmax(64px,1fr));gap:6px}
+.lib button{aspect-ratio:1;max-width:100%;background:#0b0c0e center/76% no-repeat;border:1px solid var(--line);border-radius:6px;cursor:pointer}
+.lib button:hover{border-color:var(--mute)}
+.sizes{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px}
+.sizes input{text-align:center;font-family:var(--font-mono);padding:8px 2px}
+.sizes label{text-align:center}
+.empty{border:1px dashed var(--line);border-radius:8px;padding:14px;color:var(--mute);font-size:13px}
+.sheet{background:#f3f2ee;color:#15171a;border-radius:8px;padding:16px;display:grid;gap:14px}
+.sheet h2{margin:0;font-size:20px}
+.sheet .sub{font-family:var(--font-mono);font-size:12px;color:#5d636b}
+.shots{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px}
+.shots img{display:block;width:100%;border-radius:4px}
+.tw{overflow-x:auto}
+.sheet table{border-collapse:collapse;width:100%;font-size:12.5px}
+.sheet table.spec{min-width:600px}
+.sheet th,.sheet td{border-bottom:1px solid #d3cfc6;padding:6px;text-align:left;vertical-align:top}
+.sheet th{color:#5d636b;font-size:11.5px;text-transform:uppercase;letter-spacing:.04em}
+.sheet td.num{font-family:var(--font-mono);white-space:nowrap}
+.thumb{width:52px;height:52px;object-fit:contain;background:#222;border-radius:3px}
+.msg{font-size:13px;color:var(--mute);min-height:1.2em}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<header class="top">
+  <div class="brand"><h1>Merch Lab</h1><span>xamuel · mockup studio</span></div>
+  <div class="bar">
+    <select id="designSel" aria-label="Ontwerp"></select>
+    <button class="btn" id="dupBtn" type="button">Kopie</button>
+    <span class="chip" id="chip">Lokaal</span>
+  </div>
+</header>
+
+<div class="layout">
+  <section class="stage" aria-label="Mockup">
+    <canvas id="cv" width="768" height="1024"></canvas>
+    <div class="loading" id="loading">Mockup laden…</div>
+    <div class="stage-bar">
+      <div class="seg" role="group" aria-label="Kant" id="sideSeg">
+        <button type="button" data-side="front">Voor</button>
+        <button type="button" data-side="back">Rug</button>
+      </div>
+      <div class="seg" role="group" aria-label="Weergave" id="viewSeg">
+        <button type="button" data-v="mock" aria-pressed="true">Mockup</button>
+        <button type="button" data-v="guide" aria-pressed="false">Maten</button>
+      </div>
+      <span class="stage-note" id="stageNote"></span>
+    </div>
+  </section>
+
+  <section class="side">
+    <div class="tabs" role="tablist">
+      <button role="tab" id="t-prints" aria-selected="true" data-tab="prints">Prints</button>
+      <button role="tab" id="t-product" aria-selected="false" data-tab="product">Product</button>
+      <button role="tab" id="t-pack" aria-selected="false" data-tab="pack">Tech pack</button>
+    </div>
+    <div id="p-prints" role="tabpanel" style="display:grid;gap:12px"></div>
+    <div id="p-product" role="tabpanel" hidden>
+      <div class="card">
+        <div class="field"><label class="lbl" for="nameIn">Naam</label><input type="text" id="nameIn" maxlength="70"></div>
+        <div class="row">
+          <div class="field"><label class="lbl" for="prodSel">Kledingstuk</label><select id="prodSel"></select></div>
+          <div class="field"><label class="lbl" for="colSel">Kleurweg</label><select id="colSel"></select></div>
+        </div>
+        <div class="field"><label class="lbl" for="blankIn">Blank / basis</label><input type="text" id="blankIn"><span class="hint" id="blankHint"></span></div>
+        <div class="field"><span class="lbl">Aantallen per maat</span><div class="sizes" id="sizes"></div><span class="hint" id="qty"></span></div>
+        <div class="field"><label class="lbl" for="notesIn">Notities voor de maker</label><textarea id="notesIn" rows="4"></textarea></div>
+      </div>
+    </div>
+    <div id="p-pack" role="tabpanel" hidden>
+      <div class="card">
+        <div class="bar"><button class="btn primary" id="packBtn" type="button">Tech pack bijwerken</button><button class="btn" id="dlBtn" type="button">Download tech pack + bestanden</button></div>
+        <div class="msg" id="packMsg"></div>
+        <div class="sheet" id="sheet"><p class="sub">Druk op "Tech pack bijwerken".</p></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<input type="file" id="fileIn" accept="image/png,image/svg+xml" hidden>
+
+<script>
+(()=>{
+/* ---------- products & blank photos (calibrated) ---------- */
+const PRODUCTS={"tee": {"name": "Oversized heavyweight tee", "blank": "Boxy oversized tee, 240\u2013280 g/m\u00b2, 100% katoen, dropped shoulder", "colors": {"black": {"name": "Zwart", "sides": {"front": {"src": "blanks2/tee_black_front", "w": 1254, "h": 1254, "cx": 628, "cy": 137, "ppc": 13.4, "dark": true}, "back": {"src": "blanks2/tee_black_back", "w": 1254, "h": 1254, "cx": 629, "cy": 135, "ppc": 13.433, "dark": true}}}, "white": {"name": "Wit", "sides": {"front": {"src": "blanks2/tee_white_front", "w": 1254, "h": 1254, "cx": 625, "cy": 136, "ppc": 13.25, "dark": false}, "back": {"src": "blanks2/tee_white_back", "w": 1254, "h": 1254, "cx": 625, "cy": 135, "ppc": 13.233, "dark": false}}}}}, "longsleeve": {"name": "Oversized longsleeve", "blank": "Boxy oversized longsleeve, 240 g/m\u00b2, 100% katoen, rib cuffs", "colors": {"black": {"name": "Zwart", "sides": {"front": {"src": "blanks2/ls_black_front", "w": 1254, "h": 1254, "cx": 627, "cy": 346, "ppc": 9.033, "dark": true}, "back": {"src": "blanks2/ls_black_back", "w": 1254, "h": 1254, "cx": 628, "cy": 345, "ppc": 9.033, "dark": true}}}, "white": {"name": "Wit", "sides": {"front": {"src": "blanks2/ls_white_front", "w": 1254, "h": 1254, "cx": 619, "cy": 346, "ppc": 8.983, "dark": false}, "back": {"src": "blanks2/ls_white_back", "w": 1254, "h": 1254, "cx": 622, "cy": 345, "ppc": 9.0, "dark": false}}}}}, "jersey": {"name": "Retro football jersey", "blank": "Boxy V-neck jersey, polyester mesh, contrast rib kraag en boordjes, sublimatie", "colors": {"black": {"name": "Zwart / groen", "sides": {"front": {"src": "blanks2/jersey_black_front", "w": 1254, "h": 1254, "cx": 630, "cy": 234, "ppc": 11.283, "dark": true}, "back": {"src": "blanks2/jersey_black_back", "w": 1254, "h": 1254, "cx": 628, "cy": 195, "ppc": 11.25, "dark": true}}}, "white": {"name": "Wit / rood", "sides": {"front": {"src": "blanks2/jersey_white_front", "w": 1254, "h": 1254, "cx": 624, "cy": 241, "ppc": 11.233, "dark": false}, "back": {"src": "blanks2/jersey_white_back", "w": 1254, "h": 1254, "cx": 624, "cy": 199, "ppc": 11.233, "dark": false}}}}}};
+const TECHS=['Zeefdruk','Puff (zeefdruk)','Sublimatie','DTF','Borduur'];
+const SIZES=['XS','S','M','L','XL','XXL'];
+
+/* ---------- state ---------- */
+let designs=[], D=null, side='back', view='mock', db=null, assets=null, downloads=null;
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const chip=(t,c)=>{$('chip').textContent=t;$('chip').className='chip'+(c?' '+c:'')};
+const uid=()=>Math.random().toString(36).slice(2,10);
+function cur(){return PRODUCTS[D.product].colors[D.color]}
+function blank(){return cur().sides[side]}
+
+/* ---------- WebGL compositor ---------- */
+const cv=$('cv'); const gl=cv.getContext('webgl',{preserveDrawingBuffer:true,premultipliedAlpha:false,alpha:false});
+const VS=`attribute vec2 p;varying vec2 uv;void main(){uv=vec2(p.x*.5+.5,.5-p.y*.5);gl_Position=vec4(p,0.,1.);}`;
+const FS_BASE=`precision mediump float;varying vec2 uv;uniform sampler2D photo;void main(){gl_FragColor=texture2D(photo,uv);}`;
+const FS_LAYER=`precision mediump float;varying vec2 uv;uniform sampler2D art,map,photo;uniform vec4 rect;uniform vec2 size;uniform float dark,disp,clip,guide;
+void main(){
+  vec4 m=texture2D(map,uv);
+  vec2 px=uv*size+(m.gb-.5)*2.*disp;
+  vec2 a=(px-rect.xy)/rect.zw;
+  if(a.x<0.||a.y<0.||a.x>1.||a.y>1.) discard;
+  vec4 c=texture2D(art,a);
+  float sh=m.r*2.;
+  float s=dark>.5? mix(1.,sh,.9): mix(1.,sh,1.0);
+  vec3 col=c.rgb*s*(dark>.5?0.96:0.98);
+  vec3 ph=texture2D(photo,uv).rgb;
+  float lum=dot(ph,vec3(.299,.587,.114));
+  // fabric grain: tiny high-frequency modulation from the photo itself
+  col*=0.94+0.12*smoothstep(0.,1.,dark>.5? lum*6.: lum);
+  float al=c.a*mix(1.,m.a,clip);
+  if(guide>.5){col=mix(col,vec3(1.,.3,.9),.0);}
+  gl_FragColor=vec4(col,al*.97);
+}`;
+const FS_GUIDE=`precision mediump float;varying vec2 uv;uniform vec4 rect;uniform vec2 size;void main(){vec2 px=uv*size;vec2 a=(px-rect.xy)/rect.zw;float e=1.5;
+ vec2 d=min(px-rect.xy,rect.xy+rect.zw-px); if(d.x<-e||d.y<-e) discard; if(d.x>e&&d.y>e) discard; gl_FragColor=vec4(1.,.25,.85,1.);}`;
+function sh(type,src){const s=gl.createShader(type);gl.shaderSource(s,src);gl.compileShader(s);if(!gl.getShaderParameter(s,gl.COMPILE_STATUS))console.error(gl.getShaderInfoLog(s));return s}
+function prog(fs){const p=gl.createProgram();gl.attachShader(p,sh(gl.VERTEX_SHADER,VS));gl.attachShader(p,sh(gl.FRAGMENT_SHADER,fs));gl.linkProgram(p);return p}
+const P0=prog(FS_BASE),P1=prog(FS_LAYER),P2=prog(FS_GUIDE);
+const buf=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buf);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
+function use(p){gl.useProgram(p);const l=gl.getAttribLocation(p,'p');gl.enableVertexAttribArray(l);gl.vertexAttribPointer(l,2,gl.FLOAT,false,0,0)}
+function tex(img){const t=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,t);gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL,false);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,img);
+  gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);return t}
+const imgCache=new Map();
+function loadImg(url,maxW){
+  const k=url+'|'+(maxW||0); if(imgCache.has(k)) return imgCache.get(k);
+  const pr=new Promise((res)=>{const i=new Image();i.crossOrigin='anonymous';i.onload=()=>{
+      if(maxW&&i.naturalWidth>maxW){const c=document.createElement('canvas');c.width=maxW;c.height=Math.round(i.naturalHeight*maxW/i.naturalWidth);c.getContext('2d').drawImage(i,0,0,c.width,c.height);res({el:c,w:i.naturalWidth,h:i.naturalHeight})}
+      else res({el:i,w:i.naturalWidth,h:i.naturalHeight})};i.onerror=()=>res(null);i.src=url});
+  imgCache.set(k,pr); return pr;
+}
+const texCache=new Map();
+async function texFor(url,maxW){if(texCache.has(url))return texCache.get(url);const im=await loadImg(url,maxW);if(!im)return null;const t={t:tex(im.el),w:im.w,h:im.h};texCache.set(url,t);return t}
+function placeRect(b,pl,art){const w=pl.widthCm*b.ppc, h=w*art.h/art.w; const x=b.cx+(pl.xCm||0)*b.ppc-w/2; const y=b.cy+pl.offsetCm*b.ppc; return [x,y,w,h]}
+let renderTok=0;
+async function render(){
+  const tok=++renderTok; const b=blank(); if(!b) return;
+  cv.width=b.w; cv.height=b.h; gl.viewport(0,0,b.w,b.h);
+  const [photo,map]=await Promise.all([texFor(b.src+'.jpg'),texFor(b.src+'_map.png')]);
+  if(tok!==renderTok) return;
+  if(!photo||!map){$('loading').textContent='Mockup-foto laadt niet';return}
+  const pls=D.placements.filter(p=>p.side===side&&p.on!==false).sort((a,b)=>(b.kind==='pattern')-(a.kind==='pattern'));
+  const arts=await Promise.all(pls.map(p=>texFor(p.url,1400)));
+  if(tok!==renderTok) return;
+  $('loading').hidden=true;
+  gl.disable(gl.BLEND); use(P0); gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D,photo.t); gl.uniform1i(gl.getUniformLocation(P0,'photo'),0); gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
+  gl.enable(gl.BLEND); gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);
+  pls.forEach((pl,i)=>{const art=arts[i]; if(!art) return; const r=placeRect(b,pl,art);
+    use(P1); gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,art.t);gl.uniform1i(gl.getUniformLocation(P1,'art'),0);
+    gl.activeTexture(gl.TEXTURE1);gl.bindTexture(gl.TEXTURE_2D,map.t);gl.uniform1i(gl.getUniformLocation(P1,'map'),1);
+    gl.activeTexture(gl.TEXTURE2);gl.bindTexture(gl.TEXTURE_2D,photo.t);gl.uniform1i(gl.getUniformLocation(P1,'photo'),2);
+    gl.uniform4f(gl.getUniformLocation(P1,'rect'),...r);gl.uniform2f(gl.getUniformLocation(P1,'size'),b.w,b.h);
+    gl.uniform1f(gl.getUniformLocation(P1,'dark'),b.dark?1:0);gl.uniform1f(gl.getUniformLocation(P1,'disp'),pl.kind==='pattern'?3.5:5.0);
+    gl.uniform1f(gl.getUniformLocation(P1,'clip'),1);gl.uniform1f(gl.getUniformLocation(P1,'guide'),0);
+    gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
+    if(view==='guide'&&pl.kind!=='pattern'){use(P2);gl.uniform4f(gl.getUniformLocation(P2,'rect'),...r);gl.uniform2f(gl.getUniformLocation(P2,'size'),b.w,b.h);gl.drawArrays(gl.TRIANGLE_STRIP,0,4)}
+  });
+  const shown=pls.filter(p=>p.kind!=='pattern');
+  $('stageNote').textContent=shown.length?shown.map(p=>`${p.label||'print'} ${p.widthCm} cm`).join(' · '):'geen prints op deze kant';
+}
+
+/* ---------- persistence ---------- */
+let saveT=null;
+function touch(re=true){D.updatedAt=Date.now(); if(re) render(); chip('Wijzigen…'); clearTimeout(saveT); saveT=setTimeout(save,1000)}
+async function save(){
+  const data=JSON.parse(JSON.stringify(D));
+  if(db){try{await db.doc('designs/'+D.id).set(data);chip('Opgeslagen','ok')}catch(e){chip('Niet opgeslagen','bad')}}
+  else{try{localStorage.setItem('merchlab2',JSON.stringify(designs));chip('Lokaal opgeslagen')}catch(e){chip('Niet opgeslagen','bad')}}
+  fillSel();
+}
+const SHORT={tee:'T-shirt',longsleeve:'Longsleeve',jersey:'Jersey'};
+function colName(d){return (PRODUCTS[d.product].colors[d.color]||{}).name||d.color}
+function title(d){return `${d.name} · ${colName(d)}`}
+function sortDesigns(){const ord=Object.keys(PRODUCTS);designs.sort((a,b)=>ord.indexOf(a.product)-ord.indexOf(b.product)||a.name.localeCompare(b.name)||a.color.localeCompare(b.color))}
+function fillSel(){const s=$('designSel');s.innerHTML='';
+  Object.keys(PRODUCTS).forEach(pk=>{const ds=designs.filter(d=>d.product===pk);if(!ds.length)return;const g=document.createElement('optgroup');g.label=SHORT[pk]||PRODUCTS[pk].name;
+    ds.forEach(d=>{const o=document.createElement('option');o.value=d.id;o.textContent=title(d);o.selected=d.id===D.id;g.appendChild(o)});s.appendChild(g)})}
+function preload(){Object.values(cur().sides).forEach(b=>{texFor(b.src+'.jpg');texFor(b.src+'_map.png')});D.placements.forEach(p=>texFor(p.url,1400))}
+$('designSel').onchange=e=>{D=designs.find(d=>d.id===e.target.value);open()};
+$('dupBtn').onclick=()=>{const d=JSON.parse(JSON.stringify(D));d.id=uid();d.name=D.name+' (kopie)';designs.push(d);sortDesigns();D=d;open();touch()};
+function open(){const sides=Object.keys(cur().sides); if(!sides.includes(side)) side=sides.includes('back')?'back':sides[0];
+  fillSel();renderSides();renderPrints();renderProduct();render().then(preload)}
+
+/* ---------- sides / view ---------- */
+function renderSides(){const sides=cur().sides;document.querySelectorAll('#sideSeg button').forEach(b=>{const has=!!sides[b.dataset.side];b.disabled=!has;b.title=has?'':'Nog geen foto van deze kant';b.setAttribute('aria-pressed',b.dataset.side===side?'true':'false')})}
+document.querySelectorAll('#sideSeg button').forEach(b=>b.onclick=()=>{if(b.disabled)return;side=b.dataset.side;renderSides();renderPrints();render()});
+document.querySelectorAll('#viewSeg button').forEach(b=>b.onclick=()=>{view=b.dataset.v;document.querySelectorAll('#viewSeg button').forEach(x=>x.setAttribute('aria-pressed',x===b?'true':'false'));render()});
+
+/* ---------- prints panel ---------- */
+let pendingUpload=null;
+function dpiNote(pl){if(!pl.w||pl.kind==='pattern')return '';const dpi=Math.round(pl.w/(pl.widthCm/2.54));return dpi<300?`<span class="warn">${dpi} dpi op ${pl.widthCm} cm. Voor scherpe druk 300 dpi (max ${(pl.w/300*2.54).toFixed(1)} cm), of lever vector aan.</span>`:`<span class="hint">${dpi} dpi op deze maat.${pl.svgUrl?' Vectorbestand aanwezig.':''}</span>`}
+function renderPrints(){
+  const p=$('p-prints'); p.innerHTML='';
+  const pls=D.placements.filter(x=>x.side===side);
+  if(!pls.length){const e=document.createElement('div');e.className='empty';e.textContent='Nog geen prints op deze kant. Kies hieronder een element uit de bibliotheek of upload er een.';p.appendChild(e)}
+  pls.forEach(pl=>{
+    const c=document.createElement('div');c.className='card';
+    const maxOff=pl.kind==='pattern'?20:80;
+    c.innerHTML=`<div class="card-h"><img alt="" src="${esc(pl.url)}"><div class="t"><b>${esc(pl.label||'Print')}</b><span>${esc(pl.technique)} · ${pl.widthCm} cm breed</span></div>
+      <label class="hint" style="display:flex;gap:6px;align-items:center"><input type="checkbox" ${pl.on!==false?'checked':''} data-k="on"> aan</label></div>
+      <div class="field"><label class="lbl" for="lab-${pl.id}">Naam</label><input type="text" id="lab-${pl.id}" data-k="label" value="${esc(pl.label||'')}"></div>
+      <div class="field"><label class="lbl" for="w-${pl.id}">Breedte</label><div class="range"><input type="range" id="w-${pl.id}" data-k="widthCm" min="2" max="${pl.kind==='pattern'?130:45}" step="0.5" value="${pl.widthCm}"><output>${pl.widthCm} cm</output></div></div>
+      <div class="field"><label class="lbl" for="o-${pl.id}">Bovenkant print, onder de kraagnaad</label><div class="range"><input type="range" id="o-${pl.id}" data-k="offsetCm" min="${pl.kind==='pattern'?-25:-3}" max="${maxOff}" step="0.5" value="${pl.offsetCm}"><output>${pl.offsetCm} cm</output></div></div>
+      <div class="field"><label class="lbl" for="x-${pl.id}">Links / rechts van midden (zoals je kijkt)</label><div class="range"><input type="range" id="x-${pl.id}" data-k="xCm" min="-30" max="30" step="0.5" value="${pl.xCm||0}"><output>${pl.xCm||0} cm</output></div></div>
+      <div class="row"><div class="field"><label class="lbl" for="t-${pl.id}">Techniek</label><select id="t-${pl.id}" data-k="technique">${TECHS.map(t=>`<option ${t===pl.technique?'selected':''}>${t}</option>`).join('')}</select></div>
+      <div class="field"><label class="lbl" for="i-${pl.id}">Inkt (Pantone)</label><input type="text" id="i-${pl.id}" data-k="inks" value="${esc(pl.inks||'')}"></div></div>
+      <div>${dpiNote(pl)}</div>
+      <div class="bar"><button class="btn" type="button" data-act="del">Verwijder van deze kant</button></div>`;
+    c.querySelectorAll('[data-k]').forEach(inp=>{
+      const k=inp.dataset.k; const ev=inp.type==='range'||inp.type==='text'?'input':'change';
+      inp.addEventListener(ev,()=>{
+        if(k==='on') pl.on=inp.checked; else if(inp.type==='range'){pl[k]=+inp.value;inp.nextElementSibling.textContent=inp.value+' cm'} else pl[k]=inp.value;
+        if(k==='widthCm') c.querySelector('.card-h span').textContent=`${pl.technique} · ${pl.widthCm} cm breed`;
+        if(k==='label'||k==='inks') touch(false); else touch(true);
+      });
+    });
+    c.querySelector('[data-act="del"]').onclick=()=>{D.placements=D.placements.filter(x=>x!==pl);renderPrints();touch()};
+    p.appendChild(c);
+  });
+  const lib=document.createElement('div');lib.className='card';
+  lib.innerHTML=`<div class="card-h"><div class="t"><b>Bibliotheek</b><span>tik om op deze kant te plaatsen</span></div><button class="btn" type="button" id="upBtn">Upload PNG/SVG</button></div><div class="lib" id="lib"></div><span class="hint" id="libHint"></span>`;
+  p.appendChild(lib); $('upBtn').onclick=()=>$('fileIn').click(); renderLib();
+}
+function addPlacement(a){
+  const isPat=/pattern/i.test(a.name||'');
+  D.placements.push({id:uid(),side,url:a.url,assetId:a.id||null,svgUrl:a.svgUrl||null,w:a.w||0,h:a.h||0,label:(a.label||'Print'),kind:isPat?'pattern':'print',widthCm:isPat?100:20,offsetCm:isPat?4:10,xCm:0,technique:isPat?'Sublimatie':'Zeefdruk',inks:'',on:true});
+  renderPrints(); touch();
+}
+async function renderLib(){
+  const lib=$('lib'),hint=$('libHint'); if(!lib) return;
+  if(!assets){hint.textContent='De bibliotheek werkt als je deze pagina in claude.ai opent.';return}
+  try{const {assets:list}=await assets.list(); lib.innerHTML='';
+    list.filter(a=>a.contentType==='image/png').sort((x,y)=>y.createdAt.localeCompare(x.createdAt)).forEach(a=>{
+      const b=document.createElement('button');b.type='button';b.style.backgroundImage=`url("${a.url}")`;b.setAttribute('aria-label','Element plaatsen');
+      b.onclick=async()=>{const im=await loadImg(a.url);addPlacement({id:a.id,url:a.url,w:im?im.w:0,h:im?im.h:0,label:'Element'})};
+      lib.appendChild(b)});
+    hint.textContent=list.length?'':'Nog leeg.';
+  }catch(e){hint.textContent='Bibliotheek kon niet laden.'}
+}
+$('fileIn').onchange=async e=>{const f=e.target.files[0];e.target.value='';if(!f)return;chip('Uploaden…');
+  let a=null; if(assets){try{const r=await assets.upload(f);a={id:r.id,url:r.url}}catch(err){chip('Upload mislukt','bad')}}
+  if(!a) a={id:null,url:URL.createObjectURL(f)};
+  const im=await loadImg(a.url); addPlacement({...a,w:im?im.w:0,h:im?im.h:0,label:f.name.replace(/\.[^.]+$/,''),name:f.name});
+  if(assets) renderLib()};
+
+/* ---------- product panel ---------- */
+function renderProduct(){
+  $('nameIn').value=D.name; $('nameIn').oninput=e=>{D.name=e.target.value;fillSel();touch(false)};
+  $('prodSel').innerHTML=Object.entries(PRODUCTS).map(([k,v])=>`<option value="${k}" ${k===D.product?'selected':''}>${v.name}</option>`).join('');
+  $('prodSel').onchange=e=>{D.product=e.target.value;if(!PRODUCTS[D.product].colors[D.color])D.color=Object.keys(PRODUCTS[D.product].colors)[0];sortDesigns();open();touch()};
+  $('colSel').innerHTML=Object.entries(PRODUCTS[D.product].colors).map(([k,v])=>`<option value="${k}" ${k===D.color?'selected':''}>${v.name}</option>`).join('');
+  $('colSel').onchange=e=>{D.color=e.target.value;open();touch()};
+  $('blankIn').value=D.blank||PRODUCTS[D.product].blank; $('blankIn').oninput=e=>{D.blank=e.target.value;touch(false)};
+  $('blankHint').textContent='Exacte blank en maker kiezen we bij de offerte; cm-maten zijn afgeleid van 60 cm borstbreedte.';
+  const sz=$('sizes');sz.innerHTML='';const q=()=>{const t=SIZES.reduce((a,s)=>a+(+D.sizes[s]||0),0);$('qty').textContent=`Totaal ${t} stuks.`+(t<25?' Onder 25 stuks is zeefdruk relatief duur.':'')};
+  SIZES.forEach(s=>{const f=document.createElement('div');f.className='field';f.innerHTML=`<label class="lbl" for="s-${s}">${s}</label><input type="number" min="0" id="s-${s}" value="${D.sizes[s]||0}">`;f.querySelector('input').oninput=e=>{D.sizes[s]=Math.max(0,parseInt(e.target.value||'0',10));q();touch(false)};sz.appendChild(f)});q();
+  $('notesIn').value=D.notes||''; $('notesIn').oninput=e=>{D.notes=e.target.value;touch(false)};
+}
+
+/* ---------- tabs ---------- */
+document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tabs button').forEach(x=>x.setAttribute('aria-selected',x===b?'true':'false'));['prints','product','pack'].forEach(t=>$('p-'+t).hidden=t!==b.dataset.tab);if(b.dataset.tab==='pack')buildPack()});
+
+/* ---------- tech pack ---------- */
+let pack=null;
+async function snap(s){const keep=side, kv=view; side=s; view='mock'; await render(); const u=cv.toDataURL('image/jpeg',.9); side=keep; view=kv; await render(); return u}
+function posText(pl,s){const x=pl.xCm||0;const dir=x===0?'gecentreerd':`${Math.abs(x)} cm ${(s==='front')===(x>0)?'links':'rechts'} van midden (drager)`;return `${pl.offsetCm} cm onder kraagnaad, ${dir}`}
+async function buildPack(){
+  const msg=$('packMsg'); msg.textContent='Bezig…';
+  const sides=Object.keys(cur().sides); const shots=[];
+  for(const s of sides) shots.push({s,u:await snap(s)});
+  const pr=PRODUCTS[D.product], col=cur(), tot=SIZES.reduce((a,s)=>a+(+D.sizes[s]||0),0);
+  const rows=await Promise.all(D.placements.filter(p=>p.on!==false).map(async p=>{const im=await loadImg(p.url);const h=im?(p.widthCm*im.h/im.w):null;return {p,h}}));
+  const date=new Date().toISOString().slice(0,10);
+  const html=`<div><h2>${esc(title(D))}</h2><div class="sub">Tech pack · ${date} · Xamuel Music</div></div>
+  <div class="shots">${shots.map(x=>`<figure style="margin:0"><img src="${x.u}" alt="${x.s}"><figcaption class="sub" style="text-align:center">${x.s==='front'?'Voor':'Rug'}</figcaption></figure>`).join('')}</div>
+  <div class="tw"><table><tbody>
+   <tr><th>Kledingstuk</th><td>${esc(pr.name)}</td></tr>
+   <tr><th>Blank</th><td>${esc(D.blank||pr.blank)}</td></tr>
+   <tr><th>Kleurweg</th><td>${esc(col.name)}</td></tr>
+   <tr><th>Maten</th><td class="num">${SIZES.map(s=>`${s} ${D.sizes[s]||0}`).join(' · ')} · totaal ${tot}</td></tr>
+   ${D.notes?`<tr><th>Notities</th><td>${esc(D.notes)}</td></tr>`:''}
+  </tbody></table></div>
+  <div class="tw"><table class="spec"><thead><tr><th>Art</th><th>Element</th><th>Kant</th><th>Plaatsing</th><th>Formaat (M)</th><th>Techniek</th><th>Inkt</th><th>Bestand</th></tr></thead><tbody>
+   ${rows.map(({p,h})=>`<tr><td><img class="thumb" src="${esc(p.url)}" alt=""></td><td>${esc(p.label)}</td><td>${p.side==='front'?'Voor':'Rug'}</td><td>${p.kind==='pattern'?'all-over paneel, gecentreerd':esc(posText(p,p.side))}</td><td class="num">${p.widthCm} × ${h?h.toFixed(1):'?'} cm</td><td>${esc(p.technique)}</td><td>${esc(p.inks||'n.t.b.')}</td><td>${esc((p.label||'print').replace(/\W+/g,'_'))}${p.svgUrl?'.svg (vector)':'.png'}</td></tr>`).join('')}
+  </tbody></table></div>
+  <p class="sub">Maten gelden voor maat M. Bij kleine oplages houdt de drukker één printformaat aan voor alle maten. Graag een strike-off (proefprint) ter goedkeuring vóór de oplage.</p>`;
+  $('sheet').innerHTML=html; pack={html,rows}; msg.textContent='Bijgewerkt.';
+}
+$('packBtn').onclick=buildPack;
+$('dlBtn').onclick=async()=>{const msg=$('packMsg'); if(!pack) await buildPack();
+  if(!downloads){msg.textContent='Downloaden werkt als je deze pagina in claude.ai opent.';return}
+  const css='body{font-family:Arial,sans-serif;max-width:960px;margin:24px auto;padding:0 16px;color:#15171a}.sub{color:#5d636b;font-size:12px}.shots{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.shots img{width:100%}table{border-collapse:collapse;width:100%;font-size:13px;margin:12px 0}th,td{border-bottom:1px solid #d3cfc6;padding:6px;text-align:left;vertical-align:top}th{color:#5d636b;font-size:11px;text-transform:uppercase}.thumb{width:60px;height:60px;object-fit:contain;background:#222}';
+  const base=title(D).replace(/\W+/g,'_');
+  try{
+    await downloads.save({filename:base+'_techpack.html',data:new Blob([`<!doctype html><html><head><meta charset="utf-8"><title>${esc(D.name)}</title><style>${css}</style></head><body>${pack.html}</body></html>`],{type:'text/html'})});
+    for(const {p} of pack.rows){const u=p.svgUrl||p.url; const r=await fetch(u); const b=await r.blob(); await downloads.save({filename:`${base}_${(p.label||'print').replace(/\W+/g,'_')}${p.svgUrl?'.svg':'.png'}`,data:b})}
+    msg.textContent='Bestanden aangeboden om op te slaan.';
+  }catch(e){msg.textContent=e&&e.code==='declined'?'Opslaan geannuleerd.':'Downloaden lukte niet.'}
+};
+
+/* ---------- boot ---------- */
+function seedLocal(){return [{v:2,id:'demo',name:'Voorbeeld',product:'tee',color:'black',blank:'',sizes:{XS:0,S:10,M:20,L:20,XL:10,XXL:0},notes:'',placements:[],updatedAt:Date.now()}]}
+async function boot(){
+  try{const r=localStorage.getItem('merchlab2'); if(r) designs=JSON.parse(r)}catch(e){}
+  if(!designs.length){try{const r=await fetch('designs.json');if(r.ok) designs=await r.json()}catch(e){}}
+  if(!designs.length) designs=seedLocal();
+  sortDesigns(); D=designs[0]; open();
+  const cl=window.claude; if(!cl||!cl.use){chip('Lokaal');return}
+  cl.use('downloads').then(x=>downloads=x);
+  cl.use('assets').then(x=>{assets=x;renderLib()});
+  cl.use('db').then(async x=>{db=x;if(!db)return;
+    try{const s=await db.collection('designs').orderBy('updatedAt','desc').limit(100).get();
+      const v2=s.docs.map(d=>({...d.data(),id:d.id})).filter(d=>d.v===2&&PRODUCTS[d.product]);
+      if(v2.length){designs=v2;sortDesigns();D=designs[0];open();chip('Opgeslagen','ok')} else chip('Nog niets opgeslagen');
+    }catch(e){chip('Opslag niet bereikbaar','bad')}});
+}
+boot();
+})();
+</script>
+
+</body>
+</html>
