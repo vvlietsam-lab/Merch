@@ -1,0 +1,68 @@
+{
+  "blank": "",
+  "color": "white",
+  "id": "xback-white",
+  "name": "X back tee",
+  "notes": "",
+  "placements": [
+    {
+      "h": 3944,
+      "id": "p27",
+      "inks": "PMS 485 C",
+      "kind": "print",
+      "label": "Rugprint X",
+      "offsetCm": 10,
+      "on": true,
+      "side": "back",
+      "svgUrl": "art/xback_layout_red.svg",
+      "technique": "Zeefdruk",
+      "url": "art/xback_layout_red.png",
+      "w": 3779,
+      "widthCm": 33,
+      "xCm": 0
+    },
+    {
+      "h": 170,
+      "id": "p28",
+      "inks": "PMS Cool Gray 1 C (tonaal)",
+      "kind": "print",
+      "label": "Zoom-tekst",
+      "offsetCm": 66,
+      "on": true,
+      "side": "back",
+      "svgUrl": "art/hem_micro_tonalwhite.svg",
+      "technique": "Zeefdruk",
+      "url": "art/hem_micro_tonalwhite.png",
+      "w": 1062,
+      "widthCm": 9,
+      "xCm": 19
+    },
+    {
+      "h": 695,
+      "id": "p29",
+      "inks": "PMS 485 C",
+      "kind": "print",
+      "label": "Borst wordmark",
+      "offsetCm": 16,
+      "on": true,
+      "side": "front",
+      "svgUrl": "art/wm_reversed_red.svg",
+      "technique": "Zeefdruk",
+      "url": "art/wm_reversed_red.png",
+      "w": 2834,
+      "widthCm": 10,
+      "xCm": 12
+    }
+  ],
+  "product": "tee",
+  "sizes": {
+    "L": 20,
+    "M": 20,
+    "S": 10,
+    "XL": 10,
+    "XS": 0,
+    "XXL": 0
+  },
+  "updatedAt": 1792795783214,
+  "v": 2
+}

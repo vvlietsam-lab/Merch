@@ -1,0 +1,68 @@
+{
+  "blank": "",
+  "color": "black",
+  "id": "xback-black",
+  "name": "X back tee",
+  "notes": "",
+  "placements": [
+    {
+      "h": 3944,
+      "id": "p5",
+      "inks": "PMS 802 C (fluo groen)",
+      "kind": "print",
+      "label": "Rugprint X",
+      "offsetCm": 10,
+      "on": true,
+      "side": "back",
+      "svgUrl": "art/xback_layout_green.svg",
+      "technique": "Zeefdruk",
+      "url": "art/xback_layout_green.png",
+      "w": 3779,
+      "widthCm": 33,
+      "xCm": 0
+    },
+    {
+      "h": 170,
+      "id": "p6",
+      "inks": "PMS 433 C (tonaal)",
+      "kind": "print",
+      "label": "Zoom-tekst",
+      "offsetCm": 66,
+      "on": true,
+      "side": "back",
+      "svgUrl": "art/hem_micro_tonalblack.svg",
+      "technique": "Zeefdruk",
+      "url": "art/hem_micro_tonalblack.png",
+      "w": 1062,
+      "widthCm": 9,
+      "xCm": 19
+    },
+    {
+      "h": 695,
+      "id": "p7",
+      "inks": "PMS 802 C (fluo groen)",
+      "kind": "print",
+      "label": "Borst wordmark",
+      "offsetCm": 16,
+      "on": true,
+      "side": "front",
+      "svgUrl": "art/wm_reversed_green.svg",
+      "technique": "Zeefdruk",
+      "url": "art/wm_reversed_green.png",
+      "w": 2834,
+      "widthCm": 10,
+      "xCm": 12
+    }
+  ],
+  "product": "tee",
+  "sizes": {
+    "L": 20,
+    "M": 20,
+    "S": 10,
+    "XL": 10,
+    "XS": 0,
+    "XXL": 0
+  },
+  "updatedAt": 1792795783215,
+  "v": 2
+}

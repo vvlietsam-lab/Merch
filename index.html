@@ -154,7 +154,7 @@ input[type=range]{width:100%;accent-color:var(--accent)}
 <script>
 (()=>{
 /* ---------- products & blank photos (calibrated) ---------- */
-const PRODUCTS={"tee": {"name": "Oversized heavyweight tee", "blank": "Boxy oversized tee, 240\u2013280 g/m\u00b2, 100% katoen, dropped shoulder", "colors": {"black": {"name": "Zwart", "sides": {"front": {"src": "blanks2/tee_black_front", "w": 1254, "h": 1254, "cx": 628, "cy": 137, "ppc": 13.4, "dark": true}, "back": {"src": "blanks2/tee_black_back", "w": 1254, "h": 1254, "cx": 629, "cy": 135, "ppc": 13.433, "dark": true}}}, "white": {"name": "Wit", "sides": {"front": {"src": "blanks2/tee_white_front", "w": 1254, "h": 1254, "cx": 625, "cy": 136, "ppc": 13.25, "dark": false}, "back": {"src": "blanks2/tee_white_back", "w": 1254, "h": 1254, "cx": 625, "cy": 135, "ppc": 13.233, "dark": false}}}}}, "longsleeve": {"name": "Oversized longsleeve", "blank": "Boxy oversized longsleeve, 240 g/m\u00b2, 100% katoen, rib cuffs", "colors": {"black": {"name": "Zwart", "sides": {"front": {"src": "blanks2/ls_black_front", "w": 1254, "h": 1254, "cx": 627, "cy": 346, "ppc": 9.033, "dark": true}, "back": {"src": "blanks2/ls_black_back", "w": 1254, "h": 1254, "cx": 628, "cy": 345, "ppc": 9.033, "dark": true}}}, "white": {"name": "Wit", "sides": {"front": {"src": "blanks2/ls_white_front", "w": 1254, "h": 1254, "cx": 619, "cy": 346, "ppc": 8.983, "dark": false}, "back": {"src": "blanks2/ls_white_back", "w": 1254, "h": 1254, "cx": 622, "cy": 345, "ppc": 9.0, "dark": false}}}}}, "jersey": {"name": "Retro football jersey", "blank": "Boxy V-neck jersey, polyester mesh, contrast rib kraag en boordjes, sublimatie", "colors": {"black": {"name": "Zwart / groen", "sides": {"front": {"src": "blanks2/jersey_black_front", "w": 1254, "h": 1254, "cx": 630, "cy": 234, "ppc": 11.283, "dark": true}, "back": {"src": "blanks2/jersey_black_back", "w": 1254, "h": 1254, "cx": 628, "cy": 195, "ppc": 11.25, "dark": true}}}, "white": {"name": "Wit / rood", "sides": {"front": {"src": "blanks2/jersey_white_front", "w": 1254, "h": 1254, "cx": 624, "cy": 241, "ppc": 11.233, "dark": false}, "back": {"src": "blanks2/jersey_white_back", "w": 1254, "h": 1254, "cx": 624, "cy": 199, "ppc": 11.233, "dark": false}}}}}};
+const PRODUCTS={"tee": {"name": "Oversized heavyweight tee", "blank": "Boxy oversized tee, 240\u2013280 g/m\u00b2, 100% katoen, dropped shoulder", "colors": {"black": {"name": "Zwart", "sides": {"front": {"src": "blanks2/tee_black_front", "w": 1254, "h": 1254, "cx": 628, "cy": 137, "ppc": 13.4, "dark": true}, "back": {"src": "blanks2/tee_black_back", "w": 1254, "h": 1254, "cx": 629, "cy": 135, "ppc": 13.433, "dark": true}}}, "white": {"name": "Wit", "sides": {"front": {"src": "blanks2/tee_white_front", "w": 1254, "h": 1254, "cx": 625, "cy": 136, "ppc": 13.25, "dark": false}, "back": {"src": "blanks2/tee_white_back", "w": 1254, "h": 1254, "cx": 625, "cy": 135, "ppc": 13.233, "dark": false}}}}}, "longsleeve": {"name": "Oversized longsleeve", "blank": "Boxy oversized longsleeve, 240 g/m\u00b2, 100% katoen, rib cuffs", "colors": {"black": {"name": "Zwart", "sides": {"front": {"src": "blanks2/ls_black_front", "w": 1254, "h": 1254, "cx": 627, "cy": 346, "ppc": 9.033, "dark": true}, "back": {"src": "blanks2/ls_black_back", "w": 1254, "h": 1254, "cx": 628, "cy": 345, "ppc": 9.033, "dark": true}}}, "white": {"name": "Wit", "sides": {"front": {"src": "blanks2/ls_white_front", "w": 1254, "h": 1254, "cx": 619, "cy": 346, "ppc": 8.983, "dark": false}, "back": {"src": "blanks2/ls_white_back", "w": 1254, "h": 1254, "cx": 622, "cy": 345, "ppc": 9.0, "dark": false}}}}}, "jersey": {"gloss": true, "name": "Retro football jersey", "blank": "Boxy V-neck jersey, polyester mesh, contrast rib kraag en boordjes, sublimatie", "colors": {"black": {"name": "Zwart / groen", "sides": {"front": {"src": "blanks2/jersey_black_front", "w": 1254, "h": 1254, "cx": 630, "cy": 234, "ppc": 11.283, "dark": true}, "back": {"src": "blanks2/jersey_black_back", "w": 1254, "h": 1254, "cx": 628, "cy": 195, "ppc": 11.25, "dark": true}}}, "white": {"name": "Wit / rood", "sides": {"front": {"src": "blanks2/jersey_white_front", "w": 1254, "h": 1254, "cx": 624, "cy": 241, "ppc": 11.233, "dark": false}, "back": {"src": "blanks2/jersey_white_back", "w": 1254, "h": 1254, "cx": 624, "cy": 199, "ppc": 11.233, "dark": false}}}}}};
 const TECHS=['Zeefdruk','Puff (zeefdruk)','Sublimatie','DTF','Borduur'];
 const SIZES=['XS','S','M','L','XL','XXL'];
 
@@ -171,7 +171,7 @@ function blank(){return cur().sides[side]}
 const cv=$('cv'); const gl=cv.getContext('webgl',{preserveDrawingBuffer:true,premultipliedAlpha:false,alpha:false});
 const VS=`attribute vec2 p;varying vec2 uv;void main(){uv=vec2(p.x*.5+.5,.5-p.y*.5);gl_Position=vec4(p,0.,1.);}`;
 const FS_BASE=`precision mediump float;varying vec2 uv;uniform sampler2D photo;void main(){gl_FragColor=texture2D(photo,uv);}`;
-const FS_LAYER=`precision mediump float;varying vec2 uv;uniform sampler2D art,map,photo;uniform vec4 rect;uniform vec2 size;uniform float dark,disp,clip,guide;
+const FS_LAYER=`precision mediump float;varying vec2 uv;uniform sampler2D art,map,photo;uniform vec4 rect;uniform vec2 size;uniform float dark,disp,clip,guide,gloss,isBase;
 void main(){
   vec4 m=texture2D(map,uv);
   vec2 px=uv*size+(m.gb-.5)*2.*disp;
@@ -180,11 +180,14 @@ void main(){
   vec4 c=texture2D(art,a);
   float sh=m.r*2.;
   float s=dark>.5? mix(1.,sh,.9): mix(1.,sh,1.0);
+  if(isBase>.5){ s=mix(1.,sh,dark>.5?1.6:1.15); }
   vec3 col=c.rgb*s*(dark>.5?0.96:0.98);
+  float sheen=gloss*smoothstep(1.0,1.5,sh)*(isBase>.5?0.55:0.3);
+  col+=vec3(sheen)*(dark>.5?0.55:0.35);
   vec3 ph=texture2D(photo,uv).rgb;
   float lum=dot(ph,vec3(.299,.587,.114));
   // fabric grain: tiny high-frequency modulation from the photo itself
-  col*=0.94+0.12*smoothstep(0.,1.,dark>.5? lum*6.: lum);
+  if(isBase<.5) col*=0.94+0.12*smoothstep(0.,1.,dark>.5? lum*6.: lum);
   float al=c.a*mix(1.,m.a,clip);
   if(guide>.5){col=mix(col,vec3(1.,.3,.9),.0);}
   gl_FragColor=vec4(col,al*.97);
@@ -216,7 +219,7 @@ async function render(){
   const [photo,map]=await Promise.all([texFor(b.src+'.jpg'),texFor(b.src+'_map.png')]);
   if(tok!==renderTok) return;
   if(!photo||!map){$('loading').textContent='Mockup-foto laadt niet';return}
-  const pls=D.placements.filter(p=>p.side===side&&p.on!==false).sort((a,b)=>(b.kind==='pattern')-(a.kind==='pattern'));
+  const rank=k=>k==='base'?0:k==='pattern'?1:2; const pls=D.placements.filter(p=>p.side===side&&p.on!==false).sort((a,b)=>rank(a.kind)-rank(b.kind));
   const arts=await Promise.all(pls.map(p=>texFor(p.url,1400)));
   if(tok!==renderTok) return;
   $('loading').hidden=true;
@@ -227,12 +230,12 @@ async function render(){
     gl.activeTexture(gl.TEXTURE1);gl.bindTexture(gl.TEXTURE_2D,map.t);gl.uniform1i(gl.getUniformLocation(P1,'map'),1);
     gl.activeTexture(gl.TEXTURE2);gl.bindTexture(gl.TEXTURE_2D,photo.t);gl.uniform1i(gl.getUniformLocation(P1,'photo'),2);
     gl.uniform4f(gl.getUniformLocation(P1,'rect'),...r);gl.uniform2f(gl.getUniformLocation(P1,'size'),b.w,b.h);
-    gl.uniform1f(gl.getUniformLocation(P1,'dark'),b.dark?1:0);gl.uniform1f(gl.getUniformLocation(P1,'disp'),pl.kind==='pattern'?3.5:5.0);
-    gl.uniform1f(gl.getUniformLocation(P1,'clip'),1);gl.uniform1f(gl.getUniformLocation(P1,'guide'),0);
+    gl.uniform1f(gl.getUniformLocation(P1,'dark'),b.dark?1:0);gl.uniform1f(gl.getUniformLocation(P1,'disp'),(pl.kind==='pattern'||pl.kind==='base')?3.5:5.0);
+    gl.uniform1f(gl.getUniformLocation(P1,'clip'),1);gl.uniform1f(gl.getUniformLocation(P1,'gloss'),PRODUCTS[D.product].gloss?1:0);gl.uniform1f(gl.getUniformLocation(P1,'isBase'),pl.kind==='base'?1:0);gl.uniform1f(gl.getUniformLocation(P1,'guide'),0);
     gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
-    if(view==='guide'&&pl.kind!=='pattern'){use(P2);gl.uniform4f(gl.getUniformLocation(P2,'rect'),...r);gl.uniform2f(gl.getUniformLocation(P2,'size'),b.w,b.h);gl.drawArrays(gl.TRIANGLE_STRIP,0,4)}
+    if(view==='guide'&&pl.kind==='print'){use(P2);gl.uniform4f(gl.getUniformLocation(P2,'rect'),...r);gl.uniform2f(gl.getUniformLocation(P2,'size'),b.w,b.h);gl.drawArrays(gl.TRIANGLE_STRIP,0,4)}
   });
-  const shown=pls.filter(p=>p.kind!=='pattern');
+  const shown=pls.filter(p=>p.kind==='print');
   $('stageNote').textContent=shown.length?shown.map(p=>`${p.label||'print'} ${p.widthCm} cm`).join(' · '):'geen prints op deze kant';
 }
 
@@ -265,19 +268,19 @@ document.querySelectorAll('#viewSeg button').forEach(b=>b.onclick=()=>{view=b.da
 
 /* ---------- prints panel ---------- */
 let pendingUpload=null;
-function dpiNote(pl){if(!pl.w||pl.kind==='pattern')return '';const dpi=Math.round(pl.w/(pl.widthCm/2.54));return dpi<300?`<span class="warn">${dpi} dpi op ${pl.widthCm} cm. Voor scherpe druk 300 dpi (max ${(pl.w/300*2.54).toFixed(1)} cm), of lever vector aan.</span>`:`<span class="hint">${dpi} dpi op deze maat.${pl.svgUrl?' Vectorbestand aanwezig.':''}</span>`}
+function dpiNote(pl){if(!pl.w||pl.kind!=='print')return '';const dpi=Math.round(pl.w/(pl.widthCm/2.54));return dpi<300?`<span class="warn">${dpi} dpi op ${pl.widthCm} cm. Voor scherpe druk 300 dpi (max ${(pl.w/300*2.54).toFixed(1)} cm), of lever vector aan.</span>`:`<span class="hint">${dpi} dpi op deze maat.${pl.svgUrl?' Vectorbestand aanwezig.':''}</span>`}
 function renderPrints(){
   const p=$('p-prints'); p.innerHTML='';
   const pls=D.placements.filter(x=>x.side===side);
   if(!pls.length){const e=document.createElement('div');e.className='empty';e.textContent='Nog geen prints op deze kant. Kies hieronder een element uit de bibliotheek of upload er een.';p.appendChild(e)}
   pls.forEach(pl=>{
     const c=document.createElement('div');c.className='card';
-    const maxOff=pl.kind==='pattern'?20:80;
+    const maxOff=pl.kind!=='print'?20:80;
     c.innerHTML=`<div class="card-h"><img alt="" src="${esc(pl.url)}"><div class="t"><b>${esc(pl.label||'Print')}</b><span>${esc(pl.technique)} · ${pl.widthCm} cm breed</span></div>
       <label class="hint" style="display:flex;gap:6px;align-items:center"><input type="checkbox" ${pl.on!==false?'checked':''} data-k="on"> aan</label></div>
       <div class="field"><label class="lbl" for="lab-${pl.id}">Naam</label><input type="text" id="lab-${pl.id}" data-k="label" value="${esc(pl.label||'')}"></div>
-      <div class="field"><label class="lbl" for="w-${pl.id}">Breedte</label><div class="range"><input type="range" id="w-${pl.id}" data-k="widthCm" min="2" max="${pl.kind==='pattern'?130:45}" step="0.5" value="${pl.widthCm}"><output>${pl.widthCm} cm</output></div></div>
-      <div class="field"><label class="lbl" for="o-${pl.id}">Bovenkant print, onder de kraagnaad</label><div class="range"><input type="range" id="o-${pl.id}" data-k="offsetCm" min="${pl.kind==='pattern'?-25:-3}" max="${maxOff}" step="0.5" value="${pl.offsetCm}"><output>${pl.offsetCm} cm</output></div></div>
+      <div class="field"><label class="lbl" for="w-${pl.id}">Breedte</label><div class="range"><input type="range" id="w-${pl.id}" data-k="widthCm" min="2" max="${pl.kind!=='print'?130:45}" step="0.5" value="${pl.widthCm}"><output>${pl.widthCm} cm</output></div></div>
+      <div class="field"><label class="lbl" for="o-${pl.id}">Bovenkant print, onder de kraagnaad</label><div class="range"><input type="range" id="o-${pl.id}" data-k="offsetCm" min="${pl.kind!=='print'?-30:-3}" max="${maxOff}" step="0.5" value="${pl.offsetCm}"><output>${pl.offsetCm} cm</output></div></div>
       <div class="field"><label class="lbl" for="x-${pl.id}">Links / rechts van midden (zoals je kijkt)</label><div class="range"><input type="range" id="x-${pl.id}" data-k="xCm" min="-30" max="30" step="0.5" value="${pl.xCm||0}"><output>${pl.xCm||0} cm</output></div></div>
       <div class="row"><div class="field"><label class="lbl" for="t-${pl.id}">Techniek</label><select id="t-${pl.id}" data-k="technique">${TECHS.map(t=>`<option ${t===pl.technique?'selected':''}>${t}</option>`).join('')}</select></div>
       <div class="field"><label class="lbl" for="i-${pl.id}">Inkt (Pantone)</label><input type="text" id="i-${pl.id}" data-k="inks" value="${esc(pl.inks||'')}"></div></div>

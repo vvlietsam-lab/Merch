@@ -17,7 +17,7 @@ m=((gc==cv2.GC_FGD)|(gc==cv2.GC_PR_FGD)).astype(np.uint8)
 m=cv2.morphologyEx(m,cv2.MORPH_OPEN,cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(15,15)))
 n,labs,st,_=cv2.connectedComponentsWithStats(m,8); k=1+np.argmax(st[1:,cv2.CC_STAT_AREA]); m=(labs==k).astype(np.uint8)
 ff=m.copy(); cv2.floodFill(ff,None,(0,0),1); m=m|(1-ff)
-if not dark:
+if not dark and (len(sys.argv)<6 or sys.argv[5]!="nolo"):
     lo=(cv2.GaussianBlur(L,(0,0),4)<center-22).astype(np.uint8)
     m=m&(1-lo); m=cv2.morphologyEx(m,cv2.MORPH_OPEN,cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(9,9)))
     n,labs,st,_=cv2.connectedComponentsWithStats(m,8); k=1+np.argmax(st[1:,cv2.CC_STAT_AREA]); m=(labs==k).astype(np.uint8)
@@ -37,7 +37,7 @@ yy=int(y0+(y1-y0)*0.62); row=np.where(m[yy])[0]
 runs=np.split(row, np.where(np.diff(row)>1)[0]+1); run=[r for r in runs if r.min()<=cx<=r.max()][0]
 chest_px=run.max()-run.min(); pxcm=chest_px/chest_cm
 # shading & displacement
-Lb=cv2.GaussianBlur(L,(0,0),2.0); Lm=cv2.GaussianBlur(L*m,(0,0),40)/np.maximum(cv2.GaussianBlur(m.astype(np.float32),(0,0),40),1e-3)
+Lb=cv2.GaussianBlur(L,(0,0),float(sys.argv[4]) if len(sys.argv)>4 else 2.0); Lm=cv2.GaussianBlur(L*m,(0,0),40)/np.maximum(cv2.GaussianBlur(m.astype(np.float32),(0,0),40),1e-3)
 shade=np.clip(Lb/np.maximum(Lm,1.0),0.3,1.7) if not dark else np.clip((Lb+18)/np.maximum(Lm+18,1.0),0.3,1.7)
 R=np.clip(shade*128,0,255)
 Ld=cv2.GaussianBlur(L,(0,0),6)
