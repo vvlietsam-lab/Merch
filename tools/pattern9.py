@@ -130,15 +130,22 @@ for col,(tone,acc) in T.items():
     ph=f'blanks3/gl_{col}_front'; c=json.load(open(f'{ST}/{ph}.json')); W,H=c['w'],c['h']; ppc=c['pxPerCm']
     a=cv2.imread(f'{ST}/{ph}_map.png',cv2.IMREAD_UNCHANGED)[:,:,3]
     out=[]
-    for txt,side_ in (('reversed the bass','L'),('kit 01 · 160 bpm','R')):
+    for txt,side_ in (('reversed the bass','L'),('x / 31 / 160 / 01','R')):
         ys=np.arange(420,960,10); pts=[]
         for y in ys:
             xs=np.where(a[y]>128)[0]; pts.append((xs.min()+58) if side_=='L' else (xs.max()-58))
         k,b=np.polyfit(ys,pts,1)   # x = k*y + b
         yc=700; xc=k*yc+b; ang=math.degrees(math.atan2(1,k))
         d,w=text_path(txt,MONO6,2.4*ppc,0,0.36*2.4*ppc,anchor='middle',tracking=0.04)
-        out.append(f'<g transform="translate({xc:.1f},{yc:.1f}) rotate({ang:.2f})"><path d="{d}" fill="{acc}"/></g>')
+        mirror=' scale(-1,1)' if side_=='L' else ''
+        out.append(f'<g transform="translate({xc:.1f},{yc:.1f}) rotate({ang:.2f}){mirror}"><path d="{d}" fill="{acc}"/></g>')
     sv=f'<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}">{"".join(out)}</svg>'
     png=cairosvg.svg2png(bytestring=sv.encode(),output_width=W)
     im=cv2.imdecode(np.frombuffer(png,np.uint8),cv2.IMREAD_UNCHANGED).astype(np.float32); im[:,:,3]*=a/255.
     cv2.imwrite(f'{ST}/art/gl_sleevetext_{col}.png',im.astype(np.uint8)); print('gl sleeve',col)
+
+for suf,hx in (('green','#39FF7A'),('red','#D6001C')):
+    d,w=text_path('reversed the bass',MONO6,25,0,20,tracking=0.04)
+    open(f'{ST}/art/sleeve2_right_{suf}.svg','w').write(f'<svg xmlns="http://www.w3.org/2000/svg" width="{w+2:.0f}mm" height="28mm" viewBox="0 0 {w+2:.0f} 28"><g transform="translate({w+1:.1f},0) scale(-1,1)"><path d="{d}" fill="{hx}"/></g></svg>')
+    d,w=text_path('x / 31 / 160 / 01',MONO6,25,0,20,tracking=0.04)
+    open(f'{ST}/art/sleeve2_left_{suf}.svg','w').write(f'<svg xmlns="http://www.w3.org/2000/svg" width="{w+2:.0f}mm" height="28mm" viewBox="0 0 {w+2:.0f} 28"><path d="{d}" fill="{hx}"/></svg>')
